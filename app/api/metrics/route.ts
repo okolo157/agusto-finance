@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 // Type for individual financial data
 type FinancialData = {
   id: number;
-  date: string;
+  date: Date;
   revenue: number;
   expenses: number;
   profit: number;
@@ -23,7 +23,7 @@ export async function GET() {
   try {
     // Fetch the financial data from the database
     const financialData: FinancialData[] =
-      await prisma.FinancialRecord.findMany();
+      await prisma.financialRecord.findMany();
 
     // Calculate the metrics
     const metrics: Metrics = {

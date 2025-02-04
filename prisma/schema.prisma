@@ -8,12 +8,20 @@ datasource db {
 }
 
 model FinancialRecord {
-  id             Int      @id @default(autoincrement())
-  date           DateTime
-  revenue        Int
-  expenses       Int
-  profit         Int
-  customerCount  Int
-  
+  id            Int      @id @default(autoincrement())
+  date          DateTime
+  revenue       Int
+  expenses      Int
+  profit        Int
+  customerCount Int
+
   @@map("financial_records")
+}
+
+model user {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique(map: "User_email_key")
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }

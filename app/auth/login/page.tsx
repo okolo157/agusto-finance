@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Basic validation
@@ -17,27 +17,38 @@ export default function LoginPage() {
       return;
     }
 
-    // Add your login logic here (e.g., API call)
-    console.log("Logging in with:", email, password);
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // Simulate successful login
-    setError(null);
-    router.push("/dashboard");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // Redirect to dashboard on successful login
+      router.push("/dashboard");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[90vh]">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center text-black">
-          Login
-        </h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label
-              className="block text-sm font-medium mb-2 text-black"
-              htmlFor="email"
-            >
+            <label className="block text-sm font-medium mb-2" htmlFor="email">
               Email
             </label>
             <input
@@ -52,7 +63,7 @@ export default function LoginPage() {
           </div>
           <div className="mb-6">
             <label
-              className="block text-sm font-medium mb-2 text-black"
+              className="block text-sm font-medium mb-2"
               htmlFor="password"
             >
               Password
@@ -69,13 +80,13 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-600 transition duration-300"
+            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300"
           >
             Login
           </button>
         </form>
-        <p className="mt-4 text-center text-black">
-          Dont have an account? {""}
+        <p className="mt-4 text-center">
+          Don&apos;t have an account?{" "}
           <span
             className="text-blue-500 cursor-pointer hover:underline"
             onClick={() => router.push("/auth/register")}
