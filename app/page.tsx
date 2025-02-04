@@ -1,26 +1,21 @@
-import { Open_Sans } from "next/font/google";
+"use client";
+import { useRouter } from "next/navigation";
+import React from "react";
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-});
+export default function Page() {
+  const router = useRouter();
 
-export default function Home() {
   return (
-    <div className={openSans.className}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 min-h-screen p-8 pb-20 sm:p-20">
-        <div className="rounded-lg shadow-lg bg-white p-6 text-black">
-          <h1 className="text-xl font-bold">Revenue</h1>
-        </div>
-        <div className="rounded-lg shadow-lg bg-white p-6 text-black">
-          <h1 className="text-xl font-bold">Expenses</h1>
-        </div>
-        <div className="rounded-lg shadow-lg bg-white p-6 text-black">
-          <h1 className="text-xl font-bold">Profit</h1>
-        </div>
-        <div className="rounded-lg shadow-lg bg-white p-6 text-black">
-          <h1 className="text-xl font-bold">Customer Count</h1>
-        </div>
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 gap-6 md:gap-8 lg:gap-10">
+      <p className="font-bold text-2xl md:text-3xl lg:text-4xl text-center">
+        Track your finances with ease.
+      </p>
+      <button
+        className="bg-cyan-700 text-white p-3 md:p-4 lg:p-5 rounded-lg shadow-lg hover:bg-cyan-800 transition-colors duration-300 text-sm md:text-base lg:text-lg"
+        onClick={() => router.push("/auth/register")}
+      >
+        Get Started
+      </button>
     </div>
   );
 }
