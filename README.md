@@ -39,11 +39,11 @@ CREATE DATABASE your_database_name;
 DATABASE_URL="mysql://root:password@localhost:3306/your_database_name"
 ```
 
-3. Run Prisma migrations:
+3. Run Prisma setup:
 
 ```bash
 npx prisma generate
-npx prisma migrate dev
+npx prisma db push
 ```
 
 ### 4. Run seed to instantly populate db with provided financial_data.csv dataset
