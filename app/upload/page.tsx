@@ -14,7 +14,7 @@ import {
 
 type DataRecord = Record<string, unknown>;
 
-// Predefined color palette for better visual consistency
+
 const colorPalette = [
   "#2563eb", 
   "#db2777", 

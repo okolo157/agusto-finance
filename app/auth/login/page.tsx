@@ -7,21 +7,25 @@ export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false); 
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
 
-    // Basic validation
     if (!email || !password) {
       setError("Please fill in all fields.");
       return;
     }
+
+    setLoading(true); // Start loading on form submit
 
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -30,14 +34,15 @@ export default function LoginPage() {
         throw new Error(data.message || "Login failed");
       }
 
-      // Redirect to dashboard on successful login
-      router.push("/dashboard");
-    } catch (error: unknown) {
+      router.push("/dashboard"); // Redirect only if authenticated
+    } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("An unknown error occurred.");
       }
+    } finally {
+      setLoading(false); //Stop loading after response
     }
   };
 
@@ -59,6 +64,7 @@ export default function LoginPage() {
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter your email"
               required
+              disabled={loading} //Disable input when loading
             />
           </div>
           <div className="mb-6">
@@ -76,13 +82,23 @@ export default function LoginPage() {
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter your password"
               required
+              disabled={loading} //Disable input when loading
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-600 transition duration-300"
+            className={`w-full p-2 rounded-md transition duration-300 flex justify-center items-center ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-cyan-700 hover:bg-cyan-600 text-white"
+            }`}
+            disabled={loading} //Disable button when loading
           >
-            Login
+            {loading ? (
+              <div className="w-5 h-5 border-4 border-gray-300 border-t-cyan-600 rounded-full animate-spin"></div>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
         <p className="mt-4 text-center">

@@ -8,6 +8,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +23,8 @@ export default function RegisterPage() {
       setError("Passwords do not match.");
       return;
     }
+
+    setLoading(true); // Start loading on form submit
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -44,6 +47,8 @@ export default function RegisterPage() {
       } else {
         setError("An unknown error occurred.");
       }
+    } finally {
+      setLoading(false); //Stop loading after response
     }
   };
 
@@ -65,6 +70,7 @@ export default function RegisterPage() {
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter your email"
               required
+              disabled={loading} //Disable input when loading
             />
           </div>
           <div className="mb-4">
@@ -82,6 +88,7 @@ export default function RegisterPage() {
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter your password"
               required
+              disabled={loading} // Disable input when loading
             />
           </div>
           <div className="mb-6">
@@ -99,13 +106,23 @@ export default function RegisterPage() {
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Confirm your password"
               required
+              disabled={loading} // Disable input when loading
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-600 transition duration-300"
+            className={`w-full p-2 rounded-md transition duration-300 flex justify-center items-center ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-cyan-700 hover:bg-cyan-600 text-white"
+            }`}
+            disabled={loading} // Disable button when loading
           >
-            Register
+            {loading ? (
+              <div className="w-5 h-5 border-4 border-gray-300 border-t-cyan-600 rounded-full animate-spin"></div>
+            ) : (
+              "Register"
+            )}
           </button>
         </form>
         <p className="mt-4 text-center text-black">

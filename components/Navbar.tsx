@@ -2,15 +2,31 @@
 
 import Image from "next/image";
 import React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function Navbar() {
   const path = usePathname();
+  const router = useRouter();
 
   if (path !== "/" && path !== "/dashboard" && path !== "/sample") {
     return null;
   }
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      router.push("/auth/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   return (
     <div className="bg-white flex justify-between rounded-b-3xl p-10">
@@ -31,12 +47,18 @@ export default function Navbar() {
         </Link>
       )}
       {path === "/dashboard" && (
-        <Link href={"/"} className="text-red-600 hover:text-red-400">
+        <button
+          onClick={handleLogout}
+          className="text-red-600 hover:text-red-400"
+        >
           Log out
-        </Link>
+        </button>
       )}
       {path === "/sample" && (
-        <Link href={"/dashboard"} className="text-cyan-700 hover:text-red-400 flex items-center justify-center">
+        <Link
+          href={"/dashboard"}
+          className="text-cyan-700 hover:text-red-400 flex items-center justify-center"
+        >
           Go back
         </Link>
       )}
