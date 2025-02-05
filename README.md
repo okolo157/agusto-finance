@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Data Visualization Web App Setup Guide
 
-## Getting Started
+This guide will help you set up and run the data visualization web application locally. The project uses Next.js, Prisma ORM, and MySQL.
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 18.x or later
+- MySQL 8.x or later
+- Git
+- npm or yarn
+
+## Step-by-Step Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd <project-directory>
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Database Setup
+
+1. Create a MySQL database on your local machine:
+
+```sql
+CREATE DATABASE your_database_name;
+```
+
+2. Create a `.env` file in the project root:
+
+```env
+# Database URL format: mysql://USER:PASSWORD@HOST:PORT/DATABASE
+DATABASE_URL="mysql://root:password@localhost:3306/your_database_name"
+```
+
+3. Run Prisma migrations:
+
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
+
+### 4. Run seed to instantly populate db with provided financial_data.csv dataset
+
+```bash
+npx prisma db seed
+```
+
+### 5. Start the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application should now be running at `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Common Issues & Troubleshooting
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Database Connection Issues**
 
-## Learn More
+   - Verify MySQL is running
+   - Check credentials in `.env`
+   - Ensure database exists
+   - Check firewall settings
 
-To learn more about Next.js, take a look at the following resources:
+2. **Prisma Issues**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - Make sure you run `npx prisma generate` if you intend to change the schema
+   - Check DATABASE_URL format
+   - Clear Prisma cache: `npx prisma generate --force` and generate again
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Next.js Start Issues**
+   - If version conflicts arise, stop the server and restart it.
 
-## Deploy on Vercel
+## Available Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm start`: Start production server
+- `npx prisma studio`: Open Prisma database GUI
