@@ -77,10 +77,3 @@ The application should now be running at `http://localhost:3000`
 
 3. **Next.js Start Issues**
    - If version conflicts arise, stop the server and restart it.
-
-## Available Scripts
-
-- `npm run dev`: Start development server
-- `npm run build`: Build for production
-- `npm start`: Start production server
-- `npx prisma studio`: Open Prisma database GUI
