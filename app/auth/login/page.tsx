@@ -42,8 +42,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96 text-black">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
@@ -80,7 +80,7 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300"
+            className="w-full bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-600 transition duration-300"
           >
             Login
           </button>

@@ -36,7 +36,7 @@ export default function RegisterPage() {
         throw new Error(data.message || "Registration failed");
       }
 
-      // Redirect to login page on successful registration
+      // Redirect to dash on successful registration
       router.push("/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -48,9 +48,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96 text-black">
+        <h1 className="text-2xl font-bold mb-6 text-center ">Register</h1>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleRegister}>
           <div className="mb-4">
@@ -86,7 +86,7 @@ export default function RegisterPage() {
           </div>
           <div className="mb-6">
             <label
-              className="block text-sm font-medium mb-2"
+              className="block text-sm font-medium mb-2 "
               htmlFor="confirmPassword"
             >
               Confirm Password
@@ -103,12 +103,12 @@ export default function RegisterPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300"
+            className="w-full bg-cyan-700 text-white p-2 rounded-md hover:bg-cyan-600 transition duration-300"
           >
             Register
           </button>
         </form>
-        <p className="mt-4 text-center">
+        <p className="mt-4 text-center text-black">
           Already have an account?{" "}
           <span
             className="text-blue-500 cursor-pointer hover:underline"

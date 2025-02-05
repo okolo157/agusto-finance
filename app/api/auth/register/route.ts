@@ -10,7 +10,6 @@ interface RequestBody {
 }
 
 export async function POST(request: Request) {
-  // Parse the request body and validate types
   const { email, password }: RequestBody = await request.json();
 
   // Validate required fields
@@ -34,7 +33,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Hash password
+    // Hash password with bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
