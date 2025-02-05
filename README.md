@@ -7,7 +7,7 @@ This guide will help you set up and run the data visualization web application l
 - Node.js 18.x or later
 - MySQL 8.x or later
 - Git
-- npm or yarn
+- npm
 
 ## Step-by-Step Setup
 
