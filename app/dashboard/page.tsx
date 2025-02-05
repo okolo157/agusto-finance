@@ -25,7 +25,7 @@ export default function Page() {
       }
 
       const text = e.target.result as string;
-      console.log("File content:", text);
+    //   console.log("File content:", text);
 
       try {
         const data = parseDataset(text, file.name);
@@ -102,7 +102,7 @@ export default function Page() {
           <span className="text-lg md:text-xl">
             Upload your dataset to view metrics
           </span>
-          <i className="self-center text-gray-500">(CSV/JSON format)</i>
+          <i className="self-center text-gray-500">(CSV format)</i>
           <input
             type="file"
             accept=".csv,.json"

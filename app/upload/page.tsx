@@ -9,89 +9,150 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 type DataRecord = Record<string, unknown>;
 
-export default function VisualizePage() {
+// Predefined color palette for better visual consistency
+const colorPalette = [
+  "#2563eb", 
+  "#db2777", 
+  "#16a34a", 
+  "#ea580c", 
+  "#6d28d9",
+  "#0891b2", 
+  "#be123c", 
+  "#854d0e", 
+  "#5b21b6", 
+  "#059669", 
+];
+
+const DatasetBarChart = () => {
   const [chartData, setChartData] = useState<DataRecord[]>([]);
   const [xKey, setXKey] = useState<string | null>(null);
   const [numericKeys, setNumericKeys] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    const rawDataset = localStorage.getItem("uploadedDataset"); //later version may use an indexDB, localstorage     cannot handle larger datasets
+    const rawDataset = localStorage.getItem("uploadedDataset");
     if (!rawDataset) {
-      console.warn("dataset not found");
+      console.warn("Dataset not found");
       return;
     }
 
     try {
       const dataset: DataRecord[] = JSON.parse(rawDataset);
-      console.log("Retrieved dataset:", dataset);
-
       if (!Array.isArray(dataset) || dataset.length === 0) {
-        console.error("Dataset is not an array or is empty:", dataset);
-        return;
+        throw new Error("Invalid dataset format");
       }
 
+      // Process dataset
       const firstRow = dataset[0];
-
-      // Identify keys
       const keys = Object.keys(firstRow);
-      const numericKeys: string[] = [];
-      let xKey: string | null = null;
+      const numKeys: string[] = [];
+      let categoryKey: string | null = null;
 
       keys.forEach((key) => {
         const value = firstRow[key];
         if (typeof value === "number") {
-          numericKeys.push(key); // Add as a numerical field
-        } else if (!xKey && typeof value === "string") {
-          xKey = key; // Use the first string field as x-axis
+          numKeys.push(key);
+        } else if (!categoryKey && typeof value === "string") {
+          categoryKey = key;
         }
       });
 
-      // If no suitable x-axis key is found, use an index number
-      if (!xKey) {
-        xKey = "index";
+      // Use index if no string key is found
+      if (!categoryKey) {
+        categoryKey = "index";
         dataset.forEach((row, index) => {
           row.index = index + 1;
         });
       }
 
-      console.log("X-Axis Key:", xKey);
-      console.log("Numerical Fields:", numericKeys);
-
-      setXKey(xKey);
-      setNumericKeys(numericKeys);
+      setXKey(categoryKey);
+      setNumericKeys(numKeys);
+      setSelectedKeys(numKeys.slice(0, 3)); // Initially show first 3 numeric fields
       setChartData(dataset);
     } catch (error) {
-      console.error("Error parsing dataset:", error);
+      console.error("Error processing dataset:", error);
     }
   }, []);
 
+  const handleMetricToggle = (key: string) => {
+    setSelectedKeys((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+  };
+
+  if (chartData.length === 0 || !xKey) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-gray-500">No data available for visualization</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh]">
-      <h1 className="font-bold text-3xl text-center p-10">
-        Dataset Visualization
-      </h1>
-      {chartData.length > 0 && xKey && numericKeys.length > 0 ? (
-        <BarChart width={600} height={300} data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xKey} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+    <div className="w-full max-w-6xl mx-auto">
+      <div className="p-4">
+        <h1 className="text-2xl self-center">Dataset Visualization</h1>
+        <div className="flex flex-wrap gap-2 mt-4">
           {numericKeys.map((key) => (
-            <Bar
+            <button
               key={key}
-              dataKey={key}
-              fill={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
-            />
+              onClick={() => handleMetricToggle(key)}
+              className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                selectedKeys.includes(key)
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {key}
+            </button>
           ))}
-        </BarChart>
-      ) : (
-        <p className="text-red-500">No valid numerical data to visualize.</p>
-      )}
+        </div>
+      </div>
+      <div>
+        <div className="h-[500px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={chartData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey={xKey}
+                angle={-45}
+                textAnchor="end"
+                height={70}
+                interval={0}
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                  borderRadius: "6px",
+                  padding: "10px",
+                  border: "1px solid #e5e7eb",
+                }}
+              />
+              <Legend />
+              {selectedKeys.map((key, index) => (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  fill={colorPalette[index % colorPalette.length]}
+                  name={key}
+                />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default DatasetBarChart;

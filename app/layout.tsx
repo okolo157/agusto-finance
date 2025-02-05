@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Navbar";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Agusto Finance",
-  description: "A financial dashboard for Agusto Finance",
+  title: "Agusto finance",
+  description: "Generate metrics easily",
 };
 
 export default function RootLayout({
@@ -15,12 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        suppressContentEditableWarning
-        suppressHydrationWarning
-        className="bg-[#002D53]"
-      >
-        <Header />
+      <body className={` antialiased`}>
+        <Navbar />
         {children}
         <Footer />
       </body>

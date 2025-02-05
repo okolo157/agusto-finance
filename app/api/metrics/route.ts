@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// Type for individual financial data
 type FinancialData = {
   id: number;
   date: Date;
@@ -11,21 +10,19 @@ type FinancialData = {
   customerCount: number;
 };
 
-// Type for the metrics
 type Metrics = {
   totalRevenue: number;
   totalExpenses: number;
   totalProfit: number;
 };
 
-// Define the GET function for the API route
 export async function GET() {
   try {
-    // Fetch the financial data from the database
+    // Fetch the data from the database
     const financialData: FinancialData[] =
       await prisma.financialRecord.findMany();
 
-    // Calculate the metrics
+    // Calculate the metrics (profit = revenue-expenses)
     const metrics: Metrics = {
       totalRevenue: financialData.reduce((sum, item) => sum + item.revenue, 0),
       totalExpenses: financialData.reduce(
@@ -44,7 +41,7 @@ export async function GET() {
     // Return an error response in case of failure
     console.log(error);
     return NextResponse.json(
-      { error: "Failed to fetch financial data" },
+      { error: "Failed to fetch data" },
       { status: 500 }
     );
   }
