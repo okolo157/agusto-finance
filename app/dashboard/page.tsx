@@ -38,17 +38,17 @@ export default function Page() {
         const data = parseDataset(text, file.name);
         console.log("Parsed data:", data);
 
-        // Simulating a slight delay for storage process
+        // Simulating a slight delay to allow for process to complete
         setTimeout(() => {
           localStorage.setItem("uploadedDataset", JSON.stringify(data));
 
-          setLoading(false); // Stop loading before redirection
+          setLoading(false); 
           router.push("/upload");
         }, 1000);
       } catch (err) {
         console.error("Error parsing file:", err);
-        alert("Invalid file format. Please upload a valid CSV or JSON file.");
-        setLoading(false); // Stop loading on error
+        alert("Invalid file format. Please upload a valid CSV file.");
+        setLoading(false); 
       }
     };
 
@@ -124,7 +124,7 @@ export default function Page() {
               <span className="text-lg md:text-xl">
                 Upload your dataset to view metrics
               </span>
-              <i className="self-center text-gray-500">(CSV or JSON format)</i>
+              <i className="self-center text-gray-500">(CSV format)</i>
             </>
           )}
           <input

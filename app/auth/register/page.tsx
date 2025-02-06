@@ -24,7 +24,7 @@ export default function RegisterPage() {
       return;
     }
 
-    setLoading(true); // Start loading on form submit
+    setLoading(true);
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -48,7 +48,7 @@ export default function RegisterPage() {
         setError("An unknown error occurred.");
       }
     } finally {
-      setLoading(false); //Stop loading after response
+      setLoading(false); 
     }
   };
 
@@ -70,7 +70,7 @@ export default function RegisterPage() {
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter your email"
               required
-              disabled={loading} //Disable input when loading
+              disabled={loading} 
             />
           </div>
           <div className="mb-4">
@@ -106,7 +106,7 @@ export default function RegisterPage() {
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Confirm your password"
               required
-              disabled={loading} // Disable input when loading
+              disabled={loading} 
             />
           </div>
           <button
@@ -116,7 +116,7 @@ export default function RegisterPage() {
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-cyan-700 hover:bg-cyan-600 text-white"
             }`}
-            disabled={loading} // Disable button when loading
+            disabled={loading} 
           >
             {loading ? (
               <div className="w-5 h-5 border-4 border-gray-300 border-t-cyan-600 rounded-full animate-spin"></div>

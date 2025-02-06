@@ -18,11 +18,10 @@ type Metrics = {
 
 export async function GET() {
   try {
-    // Fetch the data from the database
     const financialData: FinancialData[] =
       await prisma.financialRecord.findMany();
 
-    // Calculate the metrics (profit = revenue-expenses)
+    // Calculate the metrics (profit = revenue - expenses)
     const metrics: Metrics = {
       totalRevenue: financialData.reduce((sum, item) => sum + item.revenue, 0),
       totalExpenses: financialData.reduce(
@@ -35,10 +34,8 @@ export async function GET() {
       ),
     };
 
-    // Return the data and metrics as JSON
     return NextResponse.json({ data: financialData, metrics });
   } catch (error) {
-    // Return an error response in case of failure
     console.log(error);
     return NextResponse.json(
       { error: "Failed to fetch data" },

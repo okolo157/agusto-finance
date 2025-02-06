@@ -12,20 +12,21 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+//The Goal here is to handle different types of csv datasets
+
 type DataRecord = Record<string, unknown>;
 
-
-const colorPalette = [
-  "#2563eb", 
-  "#db2777", 
-  "#16a34a", 
-  "#ea580c", 
+const COLORS = [
+  "#2563eb",
+  "#db2777",
+  "#16a34a",
+  "#ea580c",
   "#6d28d9",
-  "#0891b2", 
-  "#be123c", 
-  "#854d0e", 
-  "#5b21b6", 
-  "#059669", 
+  "#0891b2",
+  "#be123c",
+  "#854d0e",
+  "#5b21b6",
+  "#059669",
 ];
 
 const DatasetBarChart = () => {
@@ -143,7 +144,7 @@ const DatasetBarChart = () => {
                 <Bar
                   key={key}
                   dataKey={key}
-                  fill={colorPalette[index % colorPalette.length]}
+                  fill={COLORS[index % COLORS.length]}
                   name={key}
                 />
               ))}
