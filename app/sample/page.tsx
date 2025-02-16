@@ -4,8 +4,7 @@ import MainDisplay from "@/components/MainDisplay";
 
 interface FinancialData {
   id: number;
-  month: string;
-  date: Date;
+  date: string;
   revenue: number;
   expenses: number;
   profit: number;

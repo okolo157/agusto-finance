@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 type FinancialData = {
   id: number;
-  date: Date;
+  date: string; 
   revenue: number;
   expenses: number;
   profit: number;
@@ -18,10 +18,21 @@ type Metrics = {
 
 export async function GET() {
   try {
-    const financialData: FinancialData[] =
-      await prisma.financialRecord.findMany();
+    const rawFinancialData = await prisma.financialRecord.findMany();
 
-    // Calculate the metrics (profit = revenue - expenses)
+    
+    const financialData: FinancialData[] = rawFinancialData.map((item) => ({
+      id: item.id,
+      date: new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+        new Date(item.date)
+      ),
+      revenue: item.revenue,
+      expenses: item.expenses,
+      profit: item.profit,
+      customerCount: item.customerCount,
+    }));
+
+    // Calculate the metrics
     const metrics: Metrics = {
       totalRevenue: financialData.reduce((sum, item) => sum + item.revenue, 0),
       totalExpenses: financialData.reduce(

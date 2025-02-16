@@ -22,7 +22,7 @@ const openSans = Open_Sans({
 });
 
 interface DataPoint {
-  month: string;
+  date: string;
   revenue: number;
   expenses: number;
   profit: number;
@@ -84,7 +84,7 @@ export default function MainDisplay({ data }: HomeProps) {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
+                <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip
                   formatter={(value) => `$${value.toLocaleString()}`}
@@ -113,7 +113,7 @@ export default function MainDisplay({ data }: HomeProps) {
                 <Pie
                   data={data}
                   dataKey="expenses"
-                  nameKey="month"
+                  nameKey="date"
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
@@ -152,7 +152,7 @@ export default function MainDisplay({ data }: HomeProps) {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
+                <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip
                   formatter={(value) => value.toLocaleString()}
