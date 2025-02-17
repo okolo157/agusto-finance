@@ -59,7 +59,7 @@ export default function Dashboard() {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="min-h-screen">Error: {error}</div>;
   }
 
   return (
